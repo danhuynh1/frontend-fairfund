@@ -28,17 +28,17 @@ export const addExpense = async (expenseData, token) => {
  * @param {string} groupId - The ID of the group.
  * @param {string} token - The user's JWT for authorization.
  * @returns {Promise<Array>} An array of expense objects for the group.
- */
-export const getGroupExpenses = async (groupId, token) => {
-  try {
-    const response = await axios.get(`${API_URL}/group/${groupId}`, {
-      headers: {
-        'Authorization': `Bearer ${token}`
-      }
-    });
-    return response.data;
-  } catch (error) {
-    console.error('Error fetching group expenses:', error.response?.data || error.message);
-    throw error;
-  }
-};
+  */
+  export const getGroupExpenses = async (groupId, token) => {
+    try {
+      const response = await axios.get(`${API_URL}/group/${groupId}`, {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      });
+      return response.data;
+    } catch (error) {
+      console.error('Error fetching group expenses:', error.response?.data || error.message);
+      throw error;
+    }
+  };

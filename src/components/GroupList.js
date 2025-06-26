@@ -1,26 +1,36 @@
-// src/components/GroupList.js
-// This new component is responsible for just rendering the list of groups.
-import React from 'react';
+import React from "react";
 import { Link } from 'react-router-dom';
 
+
 const GroupList = ({ groups }) => {
-  if (!groups || groups.length === 0) {
-    return <p className="text-gray-500 mt-4">You are not a member of any groups yet.</p>;
+  if (groups.length === 0) {
+    return (
+      <div className="text-center mt-8">
+        <p className="text-gray-500">You haven't joined or created any groups yet.</p>
+      </div>
+    );
   }
 
   return (
-    <ul className="space-y-3 mt-4">
+    <div className="space-y-4">
       {groups.map((group) => (
-        <li key={group._id} className="bg-gray-100 p-4 rounded-lg hover:bg-gray-200 transition-colors">
-          <Link to={`/groups/${group._id}`} className="font-semibold text-blue-600">
-            {group.name}
-          </Link>
-          <p className="text-sm text-gray-500">
-            Created by: {group.createdBy ? group.createdBy.name : 'Unknown'}
-          </p>
-        </li>
+        <Link to={`/groups/${group._id}`} key={group._id} className="block">
+          <div className="p-4 bg-white rounded-lg border hover:border-blue-500 hover:shadow-md transition-all flex justify-between items-center">
+            <span className="font-semibold text-lg text-gray-800">{group.name}</span>
+            
+            {/* --- NEW: Unsettled Indicator --- */}
+            {group.isUnsettled && (
+              <div className="flex items-center gap-2">
+                <span className="text-sm font-medium text-red-600">Unsettled</span>
+                <span className="h-3 w-3 bg-red-500 rounded-full"></span>
+              </div>
+            )}
+            {/* ----------------------------- */}
+
+          </div>
+        </Link>
       ))}
-    </ul>
+    </div>
   );
 };
 

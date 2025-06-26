@@ -1,22 +1,35 @@
 // src/components/Navbar.js
-import React, { useContext } from 'react';
-import { Link } from 'react-router-dom';
-import { AuthContext } from '../context/AuthContext';
+import React, { useContext } from "react";
+import { Link } from "react-router-dom";
+import { AuthContext } from "../context/AuthContext";
 
 const Navbar = () => {
   const { user, logout } = useContext(AuthContext);
 
   return (
-    <nav className="bg-gray-800 text-white p-4 flex justify-between items-center">
-      <Link to="/" className="text-xl font-bold hover:text-gray-300">
-        FairFund
+    <nav className="bg-green-800 text-white p-3 flex justify-between items-center shadow-md">
+      {/* Logo and App Name */}
+      <Link
+        to="/"
+        className="flex items-center gap-3 hover:opacity-80 transition-opacity"
+      >
+        <span className="text-xl font-bold tracking-wider">
+          {" "}
+          <img
+            src="/logo.png"
+            alt="FairFund Logo"
+            className="h-20 max-w-full tracking"
+          />
+        </span>
       </Link>
+
+      {/* User Info and Logout Button */}
       {user && (
         <div className="flex items-center">
-          <span className="mr-4">Welcome, {user.name}</span>
-          <button 
-            onClick={logout} 
-            className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded transition-colors"
+          <span className="mr-4 hidden sm:inline">Welcome, {user.name}</span>
+          <button
+            onClick={logout}
+            className="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded transition-colors"
           >
             Logout
           </button>

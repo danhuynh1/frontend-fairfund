@@ -1,61 +1,79 @@
 // src/pages/Dashboard.js
 // This is the updated Dashboard page that fetches and manages the groups state.
-import React, { useState, useEffect, useContext } from 'react';
-import CreateGroupForm from '../components/CreateGroupForm';
-import GroupList from '../components/GroupList';
-import { getMyGroups } from '../api/groupService';
-import { AuthContext } from '../context/AuthContext';
+import React, { useState, useEffect, useContext } from "react";
+import CreateGroupForm from "../components/CreateGroupForm";
+import GroupList from "../components/GroupList";
+import { getMyGroups } from "../api/groupService";
+import { AuthContext } from "../context/AuthContext";
 
 const Dashboard = () => {
   const [groups, setGroups] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
   const { user } = useContext(AuthContext);
 
-  // Fetch the user's groups when the component loads
-  useEffect(() => {
-    const fetchGroups = async () => {
-      // Make sure the user object and token exist before trying to fetch
-      if (user && user.token) {
-        try {
-          setLoading(true);
-          const userGroups = await getMyGroups(user.token);
-          setGroups(userGroups);
-        } catch (err) {
-          setError('Failed to fetch groups.');
-        } finally {
-          setLoading(false);
-        }
-      } else {
-        // If there's no user or token, don't attempt to load
+  const fetchGroups = async () => {
+    if (user && user.token) {
+      try {
+        setLoading(true);
+        const userGroups = await getMyGroups(user.token);
+        setGroups(userGroups);
+      } catch (err) {
+        setError("Failed to fetch your groups.");
+      } finally {
         setLoading(false);
       }
-    };
-
-    fetchGroups();
-  }, [user]); // Re-run this effect if the user object changes (e.g., on login)
-
-  // This function is called by the form when a group is created successfully
-  const handleGroupCreated = (newGroup) => {
-    // Add the new group to the top of the list for an immediate UI update
-    setGroups([newGroup, ...groups]);
+    } else {
+      setLoading(false);
+    }
   };
 
-  return (
-    <div className="p-8 max-w-4xl mx-auto">
-      <h2 className="text-3xl font-bold">Dashboard</h2>
-      <p className="mt-2 text-gray-600">
-        Welcome, {user?.name}! Create a new group or view your existing ones.
-      </p>
+  useEffect(() => {
+    fetchGroups();
+  }, [user]);
 
-      <CreateGroupForm onGroupCreated={handleGroupCreated} />
+  const handleGroupCreated = () => {
+    // After a group is created, refetch the list to ensure the UI is up to date
+    fetchGroups();
+  };
 
-      <div className="mt-8">
-        <h3 className="text-2xl font-bold">Your Groups</h3>
-        {loading && <p>Loading groups...</p>}
-        {error && <p className="text-red-600">{error}</p>}
-        {!loading && !error && <GroupList groups={groups} />}
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <p className="text-lg text-gray-500">Loading your dashboard...</p>
       </div>
+    );
+  }
+
+  return (
+    <div className="bg-gray-50 min-h-screen">
+      <main className="p-8 max-w-4xl mx-auto">
+        <div className="pb-8 border-b border-gray-200">
+          <h1 className="text-center text-4xl font-extrabold text-gray-900 tracking-tight">
+            Dashboard
+          </h1>
+        </div>
+
+        <div className="mt-8">
+          <CreateGroupForm onGroupCreated={handleGroupCreated} />
+
+          <div className="mt-12">
+            <h2 className="text-center text-2xl font-bold text-gray-800 mb-6">
+              Your Groups
+            </h2>
+
+            {error && (
+              <div className="mt-4 p-4 bg-red-50 text-red-800 border border-red-200 rounded-lg">
+                <p>
+                  <span className="font-bold">Oops!</span> {error}
+                </p>
+              </div>
+            )}
+
+            {!error && <GroupList groups={groups} />}
+          </div>
+        </div>
+      </main>
     </div>
   );
 };
