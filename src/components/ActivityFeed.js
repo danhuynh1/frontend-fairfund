@@ -15,12 +15,10 @@ const ActivityFeed = ({ items }) => {
   return (
     <div className="mt-4 space-y-3 max-h-[500px] overflow-y-auto pr-2 scroll-smooth">
       {items.map((item) => {
-        // Now you can reuse the constant for formatting
         const formattedDate = new Date(item.createdAt).toLocaleString(
           undefined,
           dateTimeFormatOptions
         );
-        // Conditionally render based on the item type from the backend
         if (item.type === "expense") {
           return (
             <div

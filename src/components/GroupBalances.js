@@ -2,7 +2,6 @@ import React, { useState, useContext } from "react";
 import { recordSettlement } from "../api/settlementService";
 import { AuthContext } from "../context/AuthContext";
 
-// The component now accepts 'settlementHistory' as a prop
 const GroupBalances = ({
   groupId,
   balances,
@@ -25,8 +24,7 @@ const GroupBalances = ({
       return;
     }
     try {
-      // --- THIS IS THE FIX ---
-      // We assume the API now returns the newly created settlement object.
+
       const newSettlement = await recordSettlement(
         { ...settlement, group: groupId },
         currentUser.token
@@ -35,8 +33,6 @@ const GroupBalances = ({
       setSettlement({ from: "", to: "", amount: "" });
       setError("");
 
-      // We now pass the new settlement data directly to the parent component's handler.
-      // This avoids a race condition and is much more efficient than a full refetch.
       onSettlementSuccess(newSettlement);
     } catch (err) {
       setError(err.message || "Failed to record settlement.");
