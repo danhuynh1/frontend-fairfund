@@ -14,11 +14,10 @@ TBD
 
 | Layer     | Tech                                      |
 |-----------|-------------------------------------------|
-| Frontend  | React.js, React Native (mobile support)   |
+| Frontend  | React.js, Tailwind, axios                 |
 | Backend   | Node.js, Express.js                       |
 | Database  | MongoDB (via Mongoose)                    |
 | Auth      | Google OAuth 2.0, JWT                     |
-| Hosting   | AWS (EC2 / S3)                            |
 | DevOps    | Azure DevOps (CI/CD)                      |
 
 ---
