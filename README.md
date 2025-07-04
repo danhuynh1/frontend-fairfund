@@ -39,10 +39,8 @@ fairfund-frontend/
 Create a `.env` file in the root:
 
 ```env
-PORT=3000
-MONGO_URI=your_mongodb_connection_string
-JWT_SECRET=your_jwt_secret
-GOOGLE_CLIENT_ID=your_google_oauth_client_id
+
+REACT_APP_GOOGLE_CLIENT_ID=your_google_oauth_client_id
 ```
 ---
 
