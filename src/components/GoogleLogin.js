@@ -19,6 +19,8 @@ const GoogleLoginButton = () => {
                   tokenId: response.credential,
                 }
               );
+              
+              console.log(res.data.token);
               login(res.data.token);
 
               navigate("/");

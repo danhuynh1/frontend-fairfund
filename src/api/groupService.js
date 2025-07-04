@@ -1,5 +1,3 @@
-// src/api/groupService.js
-// This file contains all API calls related to groups.
 import axios from "axios";
 
 const API_URL = "http://localhost:5000/api/groups";
@@ -17,7 +15,6 @@ export const createGroup = async (groupData, token) => {
     },
   };
   try {
-    // THE FIX IS HERE: The URL now includes "/create"
     const response = await axios.post(`${API_URL}/create`, groupData, config);
     return response.data;
   } catch (error) {
