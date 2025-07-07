@@ -238,22 +238,6 @@ const GroupDetail = () => {
           onSettlementSuccess={handleDataRefresh}
         />
 
-        {/* --- NEW: Settlement History Section --- */}
-        {/* <div className="bg-white p-6 rounded-lg shadow-sm border">
-            <h3 className="text-2xl font-semibold mb-4">Settlement History</h3>
-            {settlementHistory.length > 0 ? (
-                <ul className="space-y-3">
-                    {settlementHistory.map((s) => (
-                        <li key={s._id} className="p-3 bg-gray-50 rounded-md border text-sm">
-                           <strong>{s.from?.name || 'A user'}</strong> paid <strong>{s.to?.name || 'another user'}</strong>
-                           <span className="font-bold text-green-700"> ${s.amount.toFixed(2)}</span> on {new Date(s.date).toLocaleDateString()}
-                        </li>
-                    ))}
-                </ul>
-            ) : (
-                <p className="text-gray-500">No settlements have been made yet.</p>
-            )}
-        </div> */}
       </div>
       <div className="h-6" />
 

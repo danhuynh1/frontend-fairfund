@@ -20,7 +20,6 @@ const AddExpenseForm = ({
 
   useEffect(() => {
     if (members) {
-      // Initialize both custom and percentage splits when members data is available
       const initialSplits = members.map((m) => ({ user: m._id, name: m.name, amount: "" }));
       const initialPercentages = members.map((m) => ({ user: m._id, name: m.name, percentage: "" }));
       setCustomSplits(initialSplits);

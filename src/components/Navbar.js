@@ -23,7 +23,6 @@ const Navbar = () => {
         </span>
       </Link>
 
-      {/* User Info and Logout Button */}
       {user && (
         <div className="flex items-center">
           <span className="mr-4 hidden sm:inline">Welcome, {user.name}</span>
