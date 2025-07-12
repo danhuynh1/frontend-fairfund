@@ -1,4 +1,3 @@
-// src/api/settlementService.js
 import axios from "axios";
 
 const GROUP_API_URL = "http://localhost:5000/api/groups";
@@ -8,7 +7,7 @@ const SETTLEMENT_API_URL = "http://localhost:5000/api/settlements";
  * Gets the current balances for all members in a group.
  * @param {string} groupId - The ID of the group.
  * @param {string} token - The current user's JWT for authorization.
- * @returns {Promise<object>} An object containing the balance details for each member.
+ * @returns An object containing the balance details for each member.
  */
 export const getGroupBalances = async (groupId, token) => {
   try {
@@ -62,7 +61,7 @@ export const recordSettlement = async (settlementData, token) => {
  * Gets the settlement payment history for a specific group.
  * @param {string} groupId - The ID of the group.
  * @param {string} token - The user's auth token.
- * @returns {Promise<Array>} A promise that resolves to an array of settlement records.
+ * @returns promise that resolves to an array of settlement records.
  */
 export const getSettlementHistory = async (groupId, token) => {
   const config = { headers: { Authorization: `Bearer ${token}` } };

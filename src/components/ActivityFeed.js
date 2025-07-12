@@ -28,8 +28,10 @@ const ActivityFeed = ({ items }) => {
   return (
     <div className="mt-4 space-y-3 max-h-[500px] overflow-y-auto pr-2 scroll-smooth">
       {items.map((item) => {
-        const formattedDate = new Date(item.createdAt).toLocaleString(undefined, dateTimeFormatOptions);
-
+        const formattedDate = new Date(item.createdAt).toLocaleString(
+          undefined,
+          dateTimeFormatOptions
+        );
         if (item.type === "expense") {
           return (
             <div key={item._id} className="p-4 bg-white border rounded-lg shadow-sm">

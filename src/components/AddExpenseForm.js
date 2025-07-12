@@ -15,12 +15,11 @@ const AddExpenseForm = ({
   const [category, setCategory] = useState("");
   const [splitType, setSplitType] = useState("equal");
   const [customSplits, setCustomSplits] = useState([]);
-  const [percentageSplits, setPercentageSplits] = useState([]); // State for percentage splits
+  const [percentageSplits, setPercentageSplits] = useState([]);
   const [error, setError] = useState("");
 
   useEffect(() => {
     if (members) {
-      // Initialize both custom and percentage splits when members data is available
       const initialSplits = members.map((m) => ({ user: m._id, name: m.name, amount: "" }));
       const initialPercentages = members.map((m) => ({ user: m._id, name: m.name, percentage: "" }));
       setCustomSplits(initialSplits);
@@ -87,7 +86,6 @@ const AddExpenseForm = ({
                 amount: parseFloat(((totalAmount * s.percentage) / 100).toFixed(2))
             }));
         
-        // Adjust for rounding to ensure total matches
         const calculatedTotal = splitsForApi.reduce((sum, s) => sum + s.amount, 0);
         const remainder = totalAmount - calculatedTotal;
         if (splitsForApi.length > 0) {

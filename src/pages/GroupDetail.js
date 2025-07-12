@@ -1,7 +1,6 @@
-import React, { useState, useEffect, useContext, useCallback } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { useParams } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
-// Assuming an update function exists in your groupService
 import {
   getGroupDetails,
   updateGroupBudget,
@@ -11,38 +10,32 @@ import {
 import { getGroupExpenses } from "../api/expenseService";
 import {
   getGroupBalances,
-  getSettlementHistory,
-} from "../api/settlementService"; // Import the balance service
+  // getSettlementHistory,
+} from "../api/settlementService";
 
 import AddExpenseForm from "../components/AddExpenseForm";
 import ExpenseList from "../components/ExpenseList";
 import AddMemberForm from "../components/AddMemberForm";
 import GroupBalances from "../components/GroupBalances";
-import ActivityFeed from "../components/ActivityFeed"; // Import the new component
+import ActivityFeed from "../components/ActivityFeed";
 
 const GroupDetail = () => {
-  // --- State Management ---
   const [group, setGroup] = useState(null);
   const [expenses, setExpenses] = useState([]);
   const [balances, setBalances] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
-  const [settlementHistory, setSettlementHistory] = useState([]);
-  const [activity, setActivity] = useState([]); // State for combined activity
+  // const [settlementHistory, setSettlementHistory] = useState([]);
+  const [activity, setActivity] = useState([]);
 
-  // New state for managing budget editing
   const [isEditingBudget, setIsEditingBudget] = useState(false);
   const [newBudget, setNewBudget] = useState("");
-  // --- New state for adding a category budget plan ---
   const [showAddPlanForm, setShowAddPlanForm] = useState(false);
   const [newCategory, setNewCategory] = useState("");
   const [newLimit, setNewLimit] = useState("");
-  // --- Hooks and Context ---
-  const { id: groupId } = useParams(); // Use 'groupId' consistently
-  const { user: currentUser } = useContext(AuthContext); // Use 'currentUser' consistently
+  const { id: groupId } = useParams();
+  const { user: currentUser } = useContext(AuthContext);
   const [addPlanError, setAddPlanError] = useState("");
-
-  // --- Data Fetching ---
   const [refreshTrigger, setRefreshTrigger] = useState(0);
 
   useEffect(() => {
@@ -58,13 +51,13 @@ const GroupDetail = () => {
           groupData,
           expensesData,
           balancesData,
-          historyData,
+          // historyData,
           activityData,
         ] = await Promise.all([
           getGroupDetails(groupId, currentUser.token),
           getGroupExpenses(groupId, currentUser.token),
           getGroupBalances(groupId, currentUser.token),
-          getSettlementHistory(groupId, currentUser.token),
+          // getSettlementHistory(groupId, currentUser.token),
           getGroupActivity(groupId, currentUser.token),
         ]);
 
@@ -72,12 +65,12 @@ const GroupDetail = () => {
         setNewBudget(groupData.budget || "");
         setExpenses(expensesData);
         setBalances(balancesData);
-        setSettlementHistory(historyData || []);
-        setGroup(groupData);
+        // setSettlementHistory(historyData || []);
         setActivity(activityData);
         setError("");
       } catch (err) {
         setError("Failed to load group data. You may not be a member.");
+        console.error(err); // Log error for debugging
       } finally {
         setLoading(false);
       }
@@ -85,34 +78,10 @@ const GroupDetail = () => {
 
     fetchAllGroupData();
   }, [groupId, currentUser, refreshTrigger]);
+
   // --- Handlers ---
   const handleDataRefresh = () => {
     setRefreshTrigger((count) => count + 1);
-  };
-
-  const fetchOnlyBalances = useCallback(async () => {
-    if (!currentUser?.token || !groupId) return;
-    try {
-      const balancesData = await getGroupBalances(groupId, currentUser.token);
-      setBalances(balancesData);
-    } catch (err) {
-      console.error("Failed to refetch balances:", err);
-    }
-  }, [groupId, currentUser]);
-
-  // This handler now accepts the new settlement object for an optimistic update
-  const handleSettlementSuccess = (newSettlementResponse) => {
-    // Add the new settlement to the history list instantly
-    // We assume the API returns an object with a 'settlement' property
-    if (newSettlementResponse && newSettlementResponse.settlement) {
-      // THE FIX: Explicitly check if prevHistory is an array before spreading it.
-      setSettlementHistory((prevHistory) => {
-        const currentHistory = Array.isArray(prevHistory) ? prevHistory : [];
-        return [newSettlementResponse.settlement, ...currentHistory];
-      });
-    }
-    // Only refetch the balances, which is more efficient
-    fetchOnlyBalances();
   };
 
   const handleUpdateBudget = async () => {
@@ -133,11 +102,10 @@ const GroupDetail = () => {
     }
   };
 
-  // --- New handler for adding a category budget plan ---
   const handleAddBudgetPlan = async (e) => {
     e.preventDefault();
     if (!newCategory.trim() || !newLimit.trim()) {
-      setAddPlanError("⚠️ Please enter both a category and a limit.");
+      setAddPlanError("Please enter both a category and a limit.");
       return;
     }
     try {
@@ -155,10 +123,10 @@ const GroupDetail = () => {
       setAddPlanError("");
       handleDataRefresh();
     } catch (err) {
-      setAddPlanError("❌ Failed to add budget plan.");
+      setAddPlanError("Failed to add budget plan.");
     }
   };
-  // --- Derived State and Render Logic ---
+
   if (loading) return <div className="p-8 text-center">Loading...</div>;
   if (error) return <div className="p-8 text-center text-red-600">{error}</div>;
   if (!group) return <div className="p-8 text-center">Group not found.</div>;
@@ -172,7 +140,7 @@ const GroupDetail = () => {
   const totalSpent = expenses.reduce((sum, e) => sum + e.amount, 0);
 
   return (
-    <div className="p-8 max-w-6xl mx-auto">
+    <div className="p-4 sm:p-8 max-w-6xl mx-auto">
       <h2 className="text-center text-4xl font-bold mb-2">{group.name}</h2>
       <p className=" text-center text-gray-500 mb-8"> {group.description}</p>
 
@@ -194,7 +162,7 @@ const GroupDetail = () => {
           {!isEditingBudget ? (
             <div className="flex items-center gap-4">
               <p className="text-gray-700">
-                Total Spent: {/* --- THIS IS THE FIX --- */}
+                Total Spent:
                 <span
                   className={`font-bold ${
                     group.budget > 0 && totalSpent > group.budget
@@ -202,7 +170,7 @@ const GroupDetail = () => {
                       : "text-green-600" // Under or at budget
                   }`}
                 >
-                  ${totalSpent.toFixed(2)}
+                  {" "}${totalSpent.toFixed(2)}
                 </span>
                 {group.budget > 0 && (
                   <>
@@ -242,7 +210,7 @@ const GroupDetail = () => {
               >
                 Cancel
               </button>
-            </div> 
+            </div>
           )}
         </div>
       </div>
@@ -259,6 +227,7 @@ const GroupDetail = () => {
           </ul>
           <AddMemberForm groupId={groupId} onMemberAdded={handleDataRefresh} />
         </div>
+        
         <h3 className="text-2xl font-semibold mt-8 mb-4">Group Activity</h3>
         <ActivityFeed items={activity} />
 
@@ -272,7 +241,7 @@ const GroupDetail = () => {
       </div>
       <div className="h-6" />
 
-      {/* --- NEW: Category Budgets Section --- */}
+      {/* --- Category Budgets Section --- */}
       <div className="bg-white p-6 rounded-lg shadow mb-6 border">
         <h3 className="text-2xl font-semibold mb-4">Category Budgets</h3>
         <div className="space-y-3">
@@ -356,7 +325,6 @@ const GroupDetail = () => {
                   </button>
                 </div>
               </form>
-              {/* Show only addPlanError here */}
               {addPlanError && (
                 <p className="text-red-600 text-sm mt-3 ml-1">{addPlanError}</p>
               )}

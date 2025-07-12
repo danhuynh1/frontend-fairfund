@@ -1,6 +1,4 @@
-// src/pages/Dashboard.js
-// This is the updated Dashboard page that fetches and manages the groups state.
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect, useContext, useCallback } from "react";
 import CreateGroupForm from "../components/CreateGroupForm";
 import GroupList from "../components/GroupList";
 import { getMyGroups } from "../api/groupService";
@@ -12,7 +10,7 @@ const Dashboard = () => {
   const [error, setError] = useState("");
   const { user } = useContext(AuthContext);
 
-  const fetchGroups = async () => {
+  const fetchGroups = useCallback(async () => {
     if (user && user.token) {
       try {
         setLoading(true);
@@ -23,17 +21,13 @@ const Dashboard = () => {
       } finally {
         setLoading(false);
       }
-    } else {
-      setLoading(false);
     }
-  };
+  }, [user]);
 
   useEffect(() => {
     fetchGroups();
-  }, [user]);
-
+  }, [fetchGroups]);
   const handleGroupCreated = () => {
-    // After a group is created, refetch the list to ensure the UI is up to date
     fetchGroups();
   };
 
