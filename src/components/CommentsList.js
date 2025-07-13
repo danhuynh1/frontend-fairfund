@@ -22,7 +22,7 @@ const CommentsList = ({ expenseId, refreshTrigger }) => {
   if (comments.length === 0) return null;
 
   return (
-    <div className="mt-2 space-y-1 h-28 overflow-y-auto overflow-x-hidden pr-2">
+    <div class="mt-2 space-y-1 min-h-12 max-h-24 overflow-y-auto overflow-x-hidden pr-2">
       {comments.map((comment) => (
         <div
           key={comment._id}

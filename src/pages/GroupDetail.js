@@ -6,18 +6,20 @@ import {
   updateGroupBudget,
   addBudgetPlan,
   getGroupActivity,
+  getGroupBalances,
 } from "../api/groupService";
 import { getGroupExpenses } from "../api/expenseService";
-import {
-  getGroupBalances,
-  // getSettlementHistory,
-} from "../api/settlementService";
+// import {
+//   getGroupBalances,
+//   // getSettlementHistory,
+// } from "../api/settlementService";
 
 import AddExpenseForm from "../components/AddExpenseForm";
-import ExpenseList from "../components/ExpenseList";
+// import ExpenseList from "../components/ExpenseList";
 import AddMemberForm from "../components/AddMemberForm";
 import GroupBalances from "../components/GroupBalances";
 import ActivityFeed from "../components/ActivityFeed";
+import ActivityPieChart from "../components/ActivityPieChart";
 
 const GroupDetail = () => {
   const [group, setGroup] = useState(null);
@@ -139,6 +141,18 @@ const GroupDetail = () => {
 
   const totalSpent = expenses.reduce((sum, e) => sum + e.amount, 0);
 
+  const userTotals = {};
+
+  expenses.forEach((expense) => {
+    const payer = expense.paidBy?.name || "Unknown";
+    userTotals[payer] = (userTotals[payer] || 0) + expense.amount;
+  });
+
+  const chartData = Object.entries(userTotals).map(([name, value]) => ({
+    name,
+    value,
+  }));
+
   return (
     <div className="p-4 sm:p-8 max-w-6xl mx-auto">
       <h2 className="text-center text-4xl font-bold mb-2">{group.name}</h2>
@@ -170,7 +184,8 @@ const GroupDetail = () => {
                       : "text-green-600" // Under or at budget
                   }`}
                 >
-                  {" "}${totalSpent.toFixed(2)}
+                  {" "}
+                  ${totalSpent.toFixed(2)}
                 </span>
                 {group.budget > 0 && (
                   <>
@@ -213,6 +228,9 @@ const GroupDetail = () => {
             </div>
           )}
         </div>
+        <div className="flex justify-center items-center">
+          <ActivityPieChart data={chartData} />
+        </div>
       </div>
 
       <div className="space-y-6">
@@ -227,7 +245,7 @@ const GroupDetail = () => {
           </ul>
           <AddMemberForm groupId={groupId} onMemberAdded={handleDataRefresh} />
         </div>
-        
+
         <h3 className="text-2xl font-semibold mt-8 mb-4">Group Activity</h3>
         <ActivityFeed items={activity} />
 
@@ -237,7 +255,6 @@ const GroupDetail = () => {
           isLoading={loading}
           onSettlementSuccess={handleDataRefresh}
         />
-
       </div>
       <div className="h-6" />
 
@@ -341,8 +358,8 @@ const GroupDetail = () => {
             onExpenseAdded={handleDataRefresh}
             categories={group.budgetPlans?.map((plan) => plan.category)}
           />
-          <h3 className="text-2xl font-semibold mt-8 mb-4">Expense History</h3>
-          <ExpenseList expenses={expenses} />
+          {/* <h3 className="text-2xl font-semibold mt-8 mb-4">Expense History</h3> */}
+          {/* <ExpenseList expenses={expenses} /> */}
         </div>
       </div>
     </div>
