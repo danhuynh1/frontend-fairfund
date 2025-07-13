@@ -18,9 +18,10 @@ const Navbar = () => {
           <img
             src="/logo.png"
             alt="FairFund Logo"
-            className="h-20 max-w-full tracking"
+            className="h-24 max-w-full tracking"
           />
         </span>
+        <p>Budgeting Friendly</p>
       </Link>
 
       {user && (
