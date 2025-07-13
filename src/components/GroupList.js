@@ -21,14 +21,13 @@ const GroupList = ({ groups }) => {
 
   return (
     <div>
-      {/* --- Filter Buttons --- */}
       <div className="mb-4 justify-center flex gap-2">
         <button
           onClick={() => setFilter("all")}
           className={`px-4 py-1 rounded-md border ${
             filter === "all"
-              ? "bg-blue-600 text-white"
-              : "bg-white text-blue-600 border-blue-600"
+              ? "bg-green-600 text-white"
+              : "bg-white text-green-600 border-green-600"
           }`}
         >
           All Groups
@@ -48,7 +47,7 @@ const GroupList = ({ groups }) => {
       <div className="space-y-4">
         {filteredGroups.map((group) => (
           <Link to={`/groups/${group._id}`} key={group._id} className="block">
-            <div className="p-4 bg-white rounded-lg border hover:border-blue-500 hover:shadow-md transition-all flex justify-between items-center">
+            <div className="p-4 bg-white rounded-lg border hover:border-green-500 hover:shadow-md transition-all flex justify-between items-center">
               <span className="font-semibold text-lg text-gray-800">
                 {group.name}
               </span>

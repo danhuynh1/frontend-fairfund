@@ -1,11 +1,12 @@
 import axios from "axios";
+const BASE_URL = process.env.REACT_APP_API_URL;
 
-const BASE_URL = "http://localhost:5000/api/comments";
+const API_URL = `${BASE_URL}/comments`;
 
 export class CommentService {
   static async getComments(expenseId, token) {
     try {
-      const res = await axios.get(`${BASE_URL}/${expenseId}`, {
+      const res = await axios.get(`${API_URL}/${expenseId}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       return res.data;
@@ -18,7 +19,7 @@ export class CommentService {
   static async postComment(expenseId, message, token) {
     try {
       const res = await axios.post(
-        `${BASE_URL}/${expenseId}`,
+        `${API_URL}/${expenseId}`,
         { message },
         {
           headers: { Authorization: `Bearer ${token}` },
