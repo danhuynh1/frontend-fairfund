@@ -5,6 +5,7 @@ import {
   getGroupDetails,
   updateGroupBudget,
   addBudgetPlan,
+  deleteBudgetPlan,
   getGroupActivity,
   getGroupBalances,
 } from "../api/groupService";
@@ -117,6 +118,28 @@ const GroupDetail = () => {
           category: newCategory.trim(),
           limit: parseFloat(newLimit),
         },
+        currentUser.token
+      );
+      setShowAddPlanForm(false);
+      setNewCategory("");
+      setNewLimit("");
+      setAddPlanError("");
+      handleDataRefresh();
+    } catch (err) {
+      setAddPlanError("Failed to add budget plan.");
+    }
+  };
+
+  const handleDeleteBudgetPlan = async (e, categoryId) => {
+    e.preventDefault();
+    if (!groupId || !categoryId) {
+      //setAddPlanError("Please enter both a category and a limit.");
+      return;
+    }
+    try {
+      await deleteBudgetPlan(
+        groupId,
+        categoryId,
         currentUser.token
       );
       setShowAddPlanForm(false);
@@ -272,7 +295,15 @@ const GroupDetail = () => {
                   key={plan.category}
                   className="bg-gray-50 p-3 border rounded-md"
                 >
-                  <h4 className="font-medium text-gray-800">{plan.category}</h4>
+                  <div class="flex justify-between items-center">
+                    <h4 className="font-medium text-gray-800">{plan.category}</h4>
+                    <button class="text-red-500 hover:text-red-700 text-sm font-medium" onClick={(event) =>  {
+                      const confirmDelete = window.confirm("Are you sure you want to delete this item?");
+                      if (confirmDelete) {
+                        handleDeleteBudgetPlan(event, plan._id);
+                      }
+                    }}>Delete</button>
+                  </div>
                   <p className="text-sm text-gray-600">
                     ${spent.toFixed(2)} of ${plan.limit.toFixed(2)} used
                   </p>
