@@ -80,6 +80,17 @@ export const addBudgetPlan = async (groupId, planData, token) => {
   }
 };
 
+export const deleteBudgetPlan = async (groupId, categoryId, token) => {
+  const config = { headers: { Authorization: `Bearer ${token}` } };
+  try {
+    const response = await axios.delete(`${API_URL}/${groupId}/${categoryId}/delete-budget-plan`, config);
+    return response.data;
+  } catch (error) {
+    console.error("Error deleting budget plan:", error.response?.data || error.message);
+    throw error.response?.data || { message: "A network error occurred." };
+  }
+};
+
 export const getGroupActivity = async (groupId, token) => {
   try {
     const response = await axios.get(`${API_URL}/${groupId}/activity`, {
