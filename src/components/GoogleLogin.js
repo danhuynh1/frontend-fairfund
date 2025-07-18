@@ -2,6 +2,8 @@ import { useEffect, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { AuthContext } from "../context/AuthContext";
+const BASE_URL = process.env.REACT_APP_API_URL;
+const GOOGLE_LOGIN_SERVICE_API_URL = BASE_URL + "/users/google-login"
 
 const GoogleLoginButton = () => {
   const { login } = useContext(AuthContext);
@@ -15,7 +17,7 @@ const GoogleLoginButton = () => {
             try {
               // Need to move this to .env file
               const res = await axios.post(
-                "http://localhost:5000/api/users/google-login",
+                GOOGLE_LOGIN_SERVICE_API_URL,
                 {
                   tokenId: response.credential,
                 }
