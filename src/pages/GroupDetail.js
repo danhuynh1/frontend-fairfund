@@ -21,6 +21,7 @@ import AddMemberForm from "../components/AddMemberForm";
 import GroupBalances from "../components/GroupBalances";
 import ActivityFeed from "../components/ActivityFeed";
 import ActivityPieChart from "../components/ActivityPieChart";
+import EditGroupForm from "../components/EditGroupForm";
 
 const GroupDetail = () => {
   const [group, setGroup] = useState(null);
@@ -40,6 +41,8 @@ const GroupDetail = () => {
   const { user: currentUser } = useContext(AuthContext);
   const [addPlanError, setAddPlanError] = useState("");
   const [refreshTrigger, setRefreshTrigger] = useState(0);
+  const [isEditingGroup, setIsEditingGroup] = useState(false);
+
 
   useEffect(() => {
     const fetchAllGroupData = async () => {
@@ -179,7 +182,27 @@ const GroupDetail = () => {
   return (
     <div className="p-4 sm:p-8 max-w-6xl mx-auto">
       <h2 className="text-center text-4xl font-bold mb-2">{group.name}</h2>
-      <p className=" text-center text-gray-500 mb-8"> {group.description}</p>
+      <p className=" text-center text-gray-500 mb-2"> {group.description}</p>
+      <div className="items-center mb-4">
+          {!isEditingGroup ? (
+            <div className="flex justify-center">
+              <button
+                onClick={() => setIsEditingGroup(true)}
+                className="text-sm text-blue-600 hover:underline"
+              >
+                Edit Group
+              </button>
+            </div>
+          ) : (
+            <div className="items-center">
+              <EditGroupForm onGroupEdited={() => {
+                  setIsEditingGroup(false);
+                  handleDataRefresh();
+                }
+              } onCancel={() => setIsEditingGroup(false)}/>
+            </div>
+          )}
+      </div>
 
       {totalOutstanding > 0 && (
         <div className="mb-6 p-4 bg-blue-50 border border-blue-200 rounded-lg text-center">

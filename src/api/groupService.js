@@ -16,6 +16,19 @@ export const createGroup = async (groupData, token) => {
   }
 };
 
+export const editGroup = async (groupId, groupData, token) => {
+  const config = {
+    headers: { Authorization: `Bearer ${token}` },
+  };
+  try {
+    const response = await axios.put(`${API_URL}/${groupId}/edit`, groupData, config);
+    return response.data;
+  } catch (error) {
+    console.error("Error modifying group information:", error.response?.data || error.message);
+    throw error.response?.data || { message: "A network error occurred." };
+  }
+};
+
 export const getMyGroups = async (token) => {
   try {
     const response = await axios.get(API_URL, {
