@@ -4,12 +4,6 @@
 
 ---
 
-## Features
-
-TBD
-
----
-
 ## Tech Stack
 
 | Layer     | Tech                                      |
