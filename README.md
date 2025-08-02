@@ -17,13 +17,14 @@
 ---
 
 ## Project Structure
-fairfund-frontend/
+```fairfund-frontend/
 ├── public/ # contains all static files such as images, html, json, etc.
 ├── src/api/ # contains all the API services
 ├── src/components # contains all the components
 ├── src/context # contains all context files
 ├── src/pages # contains all the pages
 ├── src/App.js # main file containing the root component
+```
 
 ---
 
