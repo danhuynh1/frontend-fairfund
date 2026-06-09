@@ -23,7 +23,6 @@ const GoogleLoginButton = () => {
                 }
               );
               
-              console.log(res.data.token);
               login(res.data.token);
 
               navigate("/");
