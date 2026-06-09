@@ -20,7 +20,7 @@ function App() {
   useEffect(() => {
     const wakeUpServer = async () => {
       try {
-        const response = await fetch("https://fairfund-backend.onrender.com/health");
+        const response = await fetch(`${process.env.REACT_APP_API_URL}/health`);
         if (response.ok) {
           setIsServerAwake(true);
         } else {
