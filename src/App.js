@@ -1,14 +1,12 @@
-// src/App.js
-import React, { useContext, useState, useEffect } from 'react';
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom'; //
-import { AuthContext } from './context/AuthContext'; //
+import React, { useContext } from 'react';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { AuthContext } from './context/AuthContext';
+import Navbar from './components/Navbar';
+import PrivateRoute from './components/PrivateRoute';
+import LoginPage from './pages/LoginPage';
+import Dashboard from './pages/Dashboard';
+import GroupDetail from './pages/GroupDetail';
 
-// Import Components and Pages
-import Navbar from './components/Navbar'; //
-import PrivateRoute from './components/PrivateRoute'; //
-import LoginPage from './pages/LoginPage'; //
-import Dashboard from './pages/Dashboard'; //
-import GroupDetail from './pages/GroupDetail'; //
 function App() {
   const { user, loading } = useContext(AuthContext);
 
@@ -33,4 +31,5 @@ function App() {
     </Router>
   );
 }
-export default App; //
+
+export default App;
